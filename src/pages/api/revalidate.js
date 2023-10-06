@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    await res.unstable_revalidate(path);
+    await res.revalidate(path);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
