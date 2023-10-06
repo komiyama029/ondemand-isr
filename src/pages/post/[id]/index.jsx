@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/${params.id}`
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/posts/${params.id}`
   );
   const post = res.data;
 
