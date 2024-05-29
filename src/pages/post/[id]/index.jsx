@@ -14,15 +14,22 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/posts/${params.id}`
-  );
-  const post = res.data;
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/research/${params.id}`
+    );
+    const post = res.data;
 
-  return {
-    props: { post },
-    revalidate: 60, // 1分ごとに再生成
-  };
+    return {
+      props: { post },
+      revalidate: 60, // 1分ごとに再生成
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      notFound: true,
+    };
+  }
 }
 
 export default Post;

@@ -24,14 +24,27 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
   const { slug } = params;
 
-  const { data: page } = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/pages?slug=${slug}`
-  );
+  try {
+    const { data: page } = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/pages?slug=${slug}`
+    );
 
-  return {
-    props: { page: page[0] },
-    revalidate: 60,
-  };
+    if (page.length === 0) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: { page: page[0] },
+      revalidate: 60,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default Page;
